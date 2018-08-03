@@ -1,0 +1,5 @@
+# Visual Code directory
+.vscode/
+
+# Dependency directories
+node_modules/
