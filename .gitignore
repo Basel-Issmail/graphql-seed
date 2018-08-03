@@ -5,4 +5,4 @@
 node_modules/
 
 # production env Variables
-server/config/production
+server/config/production.js
