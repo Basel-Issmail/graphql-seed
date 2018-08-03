@@ -1,10 +1,12 @@
 import { ApolloServer, gql } from 'apollo-server-express';
 import express from 'express';
+import mongoose from 'mongoose';
 import config from './config/config';
 
 const app = express();
 
-// TO DELETE
+// db.url is different depending on NODE_ENV
+mongoose.connect(config.db.url, { useNewUrlParser: true });
 
 // This is a (sample) collection of books we'll be able to query
 // the GraphQL server for.  A more complete example might fetch
