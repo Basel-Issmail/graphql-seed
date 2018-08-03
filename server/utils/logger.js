@@ -6,17 +6,17 @@ import { toArray } from 'lodash';
 import config from '../config/config';
 
 // create a noop (no operation) function for when loggin is disabled
-const noop = function () {};
+const noop = function () {};  // eslint-disable-line
 // check if loggin is enabled in the config
 // if it is, then use console.log
 // if not then noop
-const consoleLog = config.logging ? console.log.bind(console) : noop;
+const consoleLog = config.logging ? console.log.bind(console) : noop;  // eslint-disable-line
 
 const logger = {
   log() {
     // arguments is an array like object with all the passed
     // in arguments to this function
-    const args = toArray(arguments)
+    const args = toArray(arguments) // eslint-disable-line
       .map((arg) => {
         if (typeof arg === 'object') {
           // turn the object to a string so we
@@ -25,7 +25,7 @@ const logger = {
           return string.magenta;
         }
         // coerce to string to color
-        arg += '';
+        arg += '';  // eslint-disable-line
         return arg.magenta;
       });
 

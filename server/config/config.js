@@ -15,7 +15,7 @@ let envConfig;
 // the file don't exist so lets try this statement
 // and fallback to an empty object if it does error out
 try {
-  envConfig = require(`./${config.env}`);
+  envConfig = require(`./${config.env}`); // eslint-disable-line
   // just making sure the require actually
   // got something back :)
   envConfig = envConfig || {};
