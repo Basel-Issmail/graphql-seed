@@ -2,7 +2,7 @@ import { ApolloServer } from 'apollo-server-express';
 import express from 'express';
 import mongoose from 'mongoose';
 import config from './config/config';
-import { userDefs, userResolvers } from './app/user/user.graphql';
+import { typeDefs, resolvers } from './app/index.graphql';
 
 const app = express();
 
@@ -10,8 +10,8 @@ const app = express();
 mongoose.connect(config.db.url, { useNewUrlParser: true });
 
 const server = new ApolloServer({
-  typeDefs: [userDefs],
-  resolvers: [userResolvers],
+  typeDefs,
+  resolvers,
   context: ({ req }) => ({
     SECRET: config.SECRET,
     req,
