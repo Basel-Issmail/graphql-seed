@@ -2,7 +2,7 @@ import { ApolloServer } from 'apollo-server-express';
 import express from 'express';
 import mongoose from 'mongoose';
 import config from './config/config';
-import { userDefs, userResolvers } from './models/user/user.graphql';
+import { userDefs, userResolvers } from './app/user/user.graphql';
 
 const app = express();
 
