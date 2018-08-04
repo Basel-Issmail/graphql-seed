@@ -25,9 +25,6 @@ const userResolvers = {
   Query: {
     allUsers: () => Users.find(),
   },
-  Mutation: {
-
-  },
 };
 
 export { userDefs, userResolvers };
