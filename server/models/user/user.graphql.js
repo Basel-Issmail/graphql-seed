@@ -1,4 +1,7 @@
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import { gql } from 'apollo-server-express';
+import _ from 'lodash';
 import Users from './user.model';
 
 // Construct a schema, using GraphQL schema language
@@ -17,6 +20,23 @@ const userDefs = gql`
   type Query {
     allUsers: [User]
   }
+  
+  input RegisterInput {
+    username: String!
+    password: String!
+    name: String
+    role: Role
+  }
+
+  input LoginInput {
+    username: String!
+    password: String!
+  }
+
+  type Mutation {
+    registerUser(input: RegisterInput): User!
+    loginUser(input: LoginInput): String!
+  }
 
 `;
 
@@ -24,6 +44,43 @@ const userDefs = gql`
 const userResolvers = {
   Query: {
     allUsers: () => Users.find(),
+  },
+  Mutation: {
+    registerUser: async (root, { input }) => {
+      const hashCost = 10;
+      try {
+        const passwordHash = await bcrypt.hash(input.password, hashCost);
+        const newUser = new Users({
+          username: input.username, password: passwordHash, name: input.name, role: input.role,
+        });
+        await newUser.save();
+        return newUser;
+      } catch (error) {
+        return error;
+      }
+    },
+    loginUser: async (root, { input }, { SECRET }) => {
+      const user = await Users.findOne({ username: input.username });
+      if (!user) {
+        throw new Error('Username is not correct');
+      }
+      const valid = await bcrypt.compare(input.password, user.password);
+      if (!valid) {
+        throw new Error('Incorrect Password');
+      }
+
+      const token = jwt.sign(
+        {
+          user: _.pick(user, ['id', 'role']),
+        },
+        SECRET,
+        {
+          expiresIn: '1y',
+        },
+      );
+
+      return token;
+    },
   },
 };
 
