@@ -1,5 +1,5 @@
-const jwt = require('jsonwebtoken');
-const { AuthorizationError } = require('./../errors');
+import { verify } from 'jsonwebtoken';
+import AuthorizationError from '../errors/index';
 
 const checkAuthAndResolve = ({ SECRET, req }, controller) => {
   const token = req.headers.authorization;
@@ -8,7 +8,7 @@ const checkAuthAndResolve = ({ SECRET, req }, controller) => {
       message: 'You must supply a JWT for authorization!',
     });
   }
-  const decoded = jwt.verify(
+  const decoded = verify(
     token,
     SECRET,
   );
@@ -27,7 +27,7 @@ const checkRolesAndResolve = (
       message: 'You must supply a JWT for authorization!',
     });
   }
-  const decoded = jwt.verify(
+  const decoded = verify(
     token,
     SECRET,
   );
@@ -45,4 +45,4 @@ const checkRolesAndResolve = (
   });
 };
 
-module.exports = { checkAuthAndResolve, checkRolesAndResolve };
+export { checkAuthAndResolve, checkRolesAndResolve };

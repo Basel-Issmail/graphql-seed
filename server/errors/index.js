@@ -4,4 +4,4 @@ const AuthorizationError = createError('AuthorizationError', {
   message: 'You are not authorized.',
 });
 
-export default { AuthorizationError };
+export default AuthorizationError;

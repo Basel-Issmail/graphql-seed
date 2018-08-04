@@ -2,7 +2,9 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { gql } from 'apollo-server-express';
 import _ from 'lodash';
+import { checkRolesAndResolve } from '../resolvers.graphql';
 import Users from './user.model';
+import getAllUsers from './user.ctrl';
 
 // Construct a schema, using GraphQL schema language
 const userDefs = gql`
@@ -43,7 +45,7 @@ const userDefs = gql`
 // Provide resolver functions for your schema fields
 const userResolvers = {
   Query: {
-    allUsers: () => Users.find(),
+    allUsers: (root, input, context) => checkRolesAndResolve(context, ['ADMIN'], getAllUsers),
   },
   Mutation: {
     registerUser: async (root, { input }) => {
