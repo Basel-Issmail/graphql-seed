@@ -2,4 +2,6 @@ import Users from './user.model';
 
 const getAllUsers = () => Users.find();
 
-export default getAllUsers;
+const searchUsers = input => Users.find({ name: new RegExp(input.name, 'i') });
+
+export { getAllUsers, searchUsers };

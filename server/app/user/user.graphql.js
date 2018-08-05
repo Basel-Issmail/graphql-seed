@@ -4,7 +4,7 @@ import { gql } from 'apollo-server-express';
 import _ from 'lodash';
 import { checkRolesAndResolve } from '../resolvers.graphql';
 import Users from './user.model';
-import getAllUsers from './user.ctrl';
+import { getAllUsers, searchUsers } from './user.ctrl';
 
 // Construct a schema, using GraphQL schema language
 const userDefs = gql`
@@ -21,6 +21,7 @@ const userDefs = gql`
 
   type Query {
     allUsers: [User]
+    findUser(name: String!): [User]
   }
   
   input RegisterInput {
@@ -46,6 +47,7 @@ const userDefs = gql`
 const userResolvers = {
   Query: {
     allUsers: (root, input, context) => checkRolesAndResolve(context, ['ADMIN'], getAllUsers),
+    findUser: (root, input, context) => checkRolesAndResolve(context, ['ADMIN', 'USER'], searchUsers, input),
   },
   Mutation: {
     registerUser: async (root, { input }) => {
